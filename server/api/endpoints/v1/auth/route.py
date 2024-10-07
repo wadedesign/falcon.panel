@@ -20,16 +20,14 @@ load_dotenv()
 
 router = APIRouter()
 
-# Generate a random secret key on startup
+# but why did you pup these here? ENV FILE!! chill its fine for now
 SECRET_KEY = secrets.token_urlsafe(32)
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REFRESH_TOKEN_EXPIRE_DAYS = 30
 
-# SQLite setup
 DB_PATH = "database/falcon_auth.db"
 
-# Logging setup
 logging.basicConfig(filename='database/falcon_auth.log', level=logging.INFO)
 
 def init_db():
@@ -48,7 +46,7 @@ def init_db():
 
 init_db()
 
-# Create default user
+# we create this default user, but will chnage later on when i get the core features done
 default_email = "admin@example.com"
 default_password = "adminpassword"
 
@@ -56,7 +54,6 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 security = HTTPBearer()
 
-# Rate limiting
 class RateLimiter:
     def __init__(self, times: int, seconds: int):
         self.times = times
@@ -74,7 +71,7 @@ class RateLimiter:
             self.requests[ip] = []
         self.requests[ip].append(datetime.now())
 
-# Create rate limiters
+# creating our rate limiters lol
 login_limiter = RateLimiter(times=5, seconds=60)
 register_limiter = RateLimiter(times=3, seconds=60)
 
@@ -164,7 +161,7 @@ async def login_for_access_token(request: Request, form_data: OAuth2PasswordRequ
     )
     refresh_token = create_refresh_token(user.email)
     
-    # Store refresh token in the database
+    # we store the refresh token in the database for future use
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute("UPDATE users SET refresh_token = ? WHERE email = ?", (refresh_token, user.email))
@@ -220,7 +217,6 @@ async def register(request: Request, email: EmailStr, password: str):
 async def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
 
-# Create default user if not exists
 def create_default_user():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -234,7 +230,6 @@ def create_default_user():
 
 create_default_user()
 
-# Add these new models
 class PasswordResetRequest(BaseModel):
     email: EmailStr
 
@@ -242,7 +237,6 @@ class PasswordReset(BaseModel):
     token: str
     new_password: str
 
-# Add these new functions
 def generate_password_reset_token():
     return str(uuid.uuid4())
 
@@ -270,7 +264,6 @@ def clear_reset_token(email: str):
     conn.commit()
     conn.close()
 
-# Add these new endpoints
 @router.post("/password-reset-request")
 async def request_password_reset(request: PasswordResetRequest, background_tasks: BackgroundTasks):
     user = get_user(request.email)
@@ -280,8 +273,7 @@ async def request_password_reset(request: PasswordResetRequest, background_tasks
     token = generate_password_reset_token()
     background_tasks.add_task(store_password_reset_token, request.email, token)
     
-    # In a real-world scenario, you might want to return this token securely or through a separate channel
-    # For this example, we'll return it directly (not recommended for production)
+    # TODO: send these thur the client via reset password modal in settings.
     return {"message": "Password reset token generated", "token": token}
 
 @router.post("/reset-password")
