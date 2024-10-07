@@ -37,10 +37,8 @@ export default function SignInForm() {
 
       if (response.ok) {
         const data = await response.json()
-        // Store the tokens in localStorage or a more secure storage method
         localStorage.setItem('accessToken', data.access_token)
         localStorage.setItem('refreshToken', data.refresh_token)
-        // Redirect to dashboard or home page
         router.push('/dashboard')
       } else {
         const errorData = await response.json()

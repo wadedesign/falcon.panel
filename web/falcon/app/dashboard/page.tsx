@@ -6,10 +6,10 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import DashboardLayout from '../components/DashboardLayout'
 
-// Define a type for the user object
+// we define the type 
 interface User {
   email: string;
-  // Add other user properties here as needed
+  // we will add more as we go
 }
 
 export default function Dashboard() {
@@ -35,7 +35,6 @@ export default function Dashboard() {
           const userData: User = await response.json()
           setUser(userData)
         } else {
-          // Token might be expired, redirect to sign in
           router.push('/')
         }
       } catch (error) {
@@ -56,7 +55,6 @@ export default function Dashboard() {
       <div className="p-8">
         <h1 className="text-3xl font-bold mb-4">Welcome to your Dashboard</h1>
         <p>Email: {user.email}</p>
-        {/* Add more dashboard content here */}
       </div>
     </DashboardLayout>
   )

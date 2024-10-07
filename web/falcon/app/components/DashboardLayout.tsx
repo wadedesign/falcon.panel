@@ -74,7 +74,7 @@ export default function Component({ children }: DashboardLayoutProps) {
 
   return (
     <div className="flex h-screen bg-black p-4">
-      {/* Elegant sidebar toggle button */}
+      {/* Elegant sidebar toggle button AI was here*/}
       <button
         ref={toggleButtonRef}
         className={`lg:hidden fixed left-0 top-1/2 -translate-y-1/2 z-20 bg-blue-900 text-white p-2 rounded-r-md transition-all duration-300 ease-in-out ${
