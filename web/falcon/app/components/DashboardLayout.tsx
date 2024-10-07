@@ -3,7 +3,7 @@
 import React, { ReactNode, useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ChevronDown, ChevronUp, ChevronRight, Home, User, Settings, LogOut, BarChart2, FileText, Users } from 'lucide-react'
+import { ChevronDown, ChevronUp, ChevronRight, Home, User, Settings, LogOut, BarChart2, FileText, Users, Server, Package } from 'lucide-react'
 
 interface DashboardLayoutProps {
   children: ReactNode
@@ -49,28 +49,31 @@ export default function Component({ children }: DashboardLayoutProps) {
 
   const menuItems = [
     { key: 'home', label: 'Home', icon: Home, href: '/dashboard' },
+    { key: 'servers', label: 'Servers', icon: Server, href: '/dashboard/servers' },
     {
-      key: 'analytics',
-      label: 'Analytics',
-      icon: BarChart2,
-      subItems: [
-        { label: 'Overview', href: '/dashboard/analytics/overview' },
-        { label: 'Reports', href: '/dashboard/analytics/reports' },
-      ],
-    },
-    {
-      key: 'management',
-      label: 'Management',
-      icon: Users,
-      subItems: [
-        { label: 'Team', href: '/dashboard/management/team' },
-        { label: 'Projects', href: '/dashboard/management/projects' },
-      ],
-    },
-    { key: 'documents', label: 'Documents', icon: FileText, href: '/dashboard/documents' },
-    { key: 'profile', label: 'Profile', icon: User, href: '/dashboard/profile' },
-    { key: 'settings', label: 'Settings', icon: Settings, href: '/dashboard/settings' },
-  ]
+          key: 'analytics',
+          label: 'Analytics',
+          icon: BarChart2,
+          subItems: [
+            { label: 'Overview', href: '/dashboard/analytics/overview' },
+            { label: 'Server Performance', href: '/dashboard/analytics/performance' },
+            { label: 'Resource Usage', href: '/dashboard/analytics/usage' },
+          ],
+        },
+        {
+          key: 'management',
+          label: 'Management',
+          icon: Users,
+          subItems: [
+            { label: 'Team', href: '/dashboard/management/team' },
+            { label: 'Roles & Permissions', href: '/dashboard/management/roles' },
+          ],
+        },
+        { key: 'plugins', label: 'Plugins', icon: Package, href: '/dashboard/plugins' },
+        { key: 'nodes', label: 'Nodes', icon: Server, href: '/dashboard/nodes' },
+        { key: 'profile', label: 'Profile', icon: User, href: '/dashboard/profile' },
+        { key: 'settings', label: 'Settings', icon: Settings, href: '/dashboard/settings' },
+    ];
 
   return (
     <div className="flex h-screen bg-black p-4">

@@ -1,6 +1,6 @@
 # falcon panel 
 
-the alternative for pterodactyl panel & pelican panel
+a help jail2ban config panel
 
 ... more coming soon
 

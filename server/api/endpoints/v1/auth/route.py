@@ -41,6 +41,17 @@ def init_db():
         reset_token TEXT
     )
     ''')
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS nodes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        ip_address TEXT NOT NULL,
+        port INTEGER NOT NULL,
+        status TEXT NOT NULL,
+        user_email TEXT,
+        FOREIGN KEY (user_email) REFERENCES users(email)
+    )
+    ''')
     conn.commit()
     conn.close()
 
